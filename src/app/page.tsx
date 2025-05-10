@@ -1,7 +1,8 @@
+import { Suspense } from "react";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { prefetchUsers } from "@/hooks/useUsers";
 import { getQueryClient } from "@/providers/getQueryClient";
-import { UserList } from "@/components/UserList/UserList";
+import { LoadingSpinner, UserList } from "@/components";
 
 export default async function Home() {
   const queryClient = getQueryClient();
@@ -9,7 +10,9 @@ export default async function Home() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <UserList />
+      <Suspense fallback={<LoadingSpinner />}>
+        <UserList />
+      </Suspense>
     </HydrationBoundary>
   );
 }
